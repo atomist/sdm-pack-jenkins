@@ -8,6 +8,57 @@ converging Job definitions and triggering jobs/build/pipelines as part
 of an Atomist SDM goal set.
 
 <!-- atomist:code-snippet:start=lib/sdm/jenkinsJob.ts#sdm -->
+```typescript
+/**
+ * Main entry point into the SDM
+ */
+export const configuration = configure(async () => {
+
+    // The Jenkins goal needs access to the Jenkins master which
+    // can be configured below
+    const options: Pick<JenkinsRegistration, "server"> = {
+        server: {
+            url: process.env.JENKINS_URL || "http://127.0.0.1:8080",
+            user: process.env.JENKINS_USER || "admin",
+            password: process.env.JENKINS_PASSWORD || "123456",
+        },
+    };
+
+    // Jenkins goal that runs a job named <repo_name>-build which will be
+    // created or updated with a job definition returned by the mavenPipeline
+    // function
+    const build = jenkinsRun("build", {
+        ...options,
+        job: async gi => `${gi.goalEvent.repo.name}-build`,
+        definition: async gi => mavenPipeline(gi),
+    });
+
+    // Single push rule that runs the build goal when the push is material and the project
+    // has a pom.xml file
+    return {
+        "ci/cd": {
+            test: [
+                hasFile("pom.xml"),
+                isMaterialChange({
+                    extensions: ["java", "properties", "yaml"],
+                    files: ["pom.xml"],
+                })],
+            goals: [
+                build,
+            ],
+        },
+    };
+});
+
+/**
+ * Load the job definition from a local XML template
+ */
+async function mavenPipeline(gi: GoalInvocation): Promise<string> {
+    const template = (await fs.readFile(path.join(__dirname, "maven.pipeline.xml"))).toString();
+    const hb = hbx.compile(template);
+    return hb({ gi });
+}
+```
 <!-- atomist:code-snippet:end -->
 
 Software delivery machines enable you to control your delivery process
