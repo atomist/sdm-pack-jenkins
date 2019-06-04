@@ -7,7 +7,8 @@ An extension Pack for an Atomist SDM to integrate with Jenkins for
 converging Job definitions and triggering jobs/build/pipelines as part
 of an Atomist SDM goal set.
 
-// add link to sample
+<!-- atomist:code-snippet:start=lib/sdm/jenkinsJob.ts#sdm -->
+<!-- atomist:code-snippet:end -->
 
 Software delivery machines enable you to control your delivery process
 in code.  Think of it as an API for your software delivery.  See the
