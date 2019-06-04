@@ -1,14 +1,12 @@
-<p align="center">
-  <img src="https://images.atomist.com/sdm/SDM-Logo-Dark.png">
-</p>
+# @atomist/sdm-pack-jenkins
 
-# @atomist-seeds/sdm-pack
+[![npm version](https://img.shields.io/npm/v/@atomist/sdm-pack-jenkins.svg)](https://www.npmjs.com/package/@atomist/sdm-pack-jenkins)
 
-[![atomist sdm goals](http://badge.atomist.com/T29E48P34/atomist-seeds/sdm-pack/24939d09-fe00-4a7a-8d52-0fc4c9672100)](https://app.atomist.com/workspace/T29E48P34)
-[![npm version](https://img.shields.io/npm/v/@atomist-seeds/sdm-pack.svg)](https://www.npmjs.com/package/@atomist-seeds/sdm-pack)
+An extension Pack for an Atomist SDM to integrate with Jenkins for 
+converging Job definitions and triggering jobs/build/pipelines as part
+of an Atomist SDM goal set.
 
-A starting point for an extension pack for an [Atomist][atomist]
-software delivery machine (SDM).
+// add link to sample
 
 Software delivery machines enable you to control your delivery process
 in code.  Think of it as an API for your software delivery.  See the

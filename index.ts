@@ -14,4 +14,13 @@
  * limitations under the License.
  */
 
-export { SeedSupport } from "./lib/seed";
+export {
+    jenkinsRun,
+    JenkinsJobParameters,
+    JenkinsRegistration,
+    JenkinsJobDefinition,
+    JenkinsJobName,
+
+    JenkinsProgressReporter,
+    JenkinsProgressTests,
+} from "./lib/goal/JenkinsRun";

@@ -1,10 +1,11 @@
 {
   "name": "@atomist/sdm-pack-jenkins",
   "version": "0.1.0",
-  "description": "my new project",
+  "description": "Extension Pack for an Atomist SDM to integrate with Jenkins",
   "author": {
-    "name": "Christian Dupuis",
-    "email": "cd@atomist.com"
+    "name": "Atomist",
+    "email": "support@atomist.com",
+    "url": "https://atomist.com/"
   },
   "license": "Apache-2.0",
   "homepage": "https://github.com/atomist/sdm-pack-jenkins#readme",
@@ -19,11 +20,16 @@
     "atomist",
     "automation",
     "pack",
-    "sdm"
+    "sdm",
+    "jenkins"
   ],
   "main": "./index.js",
   "types": "./index.d.ts",
-  "dependencies": {},
+  "dependencies": {
+    "@atomist/slack-messages": "^1.1.0",
+    "jenkins": "^0.25.0",
+    "lodash": "^4.17.11"
+  },
   "peerDependencies": {
     "@atomist/automation-client": "*",
     "@atomist/sdm": "*",
