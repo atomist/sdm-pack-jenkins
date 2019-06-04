@@ -7,6 +7,9 @@ An extension Pack for an Atomist SDM to integrate with Jenkins for
 converging Job definitions and triggering jobs/build/pipelines as part
 of an Atomist SDM goal set.
 
+The following code sample shows the `Jenkins` goal being used in a simple 
+SDM from our [samples](https://github.com/atomist/samples/blob/master/lib/sdm/jenkinsJob.ts):
+
 <!-- atomist:code-snippet:start=lib/sdm/jenkinsJob.ts#sdm -->
 ```typescript
 /**
