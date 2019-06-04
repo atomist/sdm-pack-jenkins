@@ -1,5 +1,6 @@
 # @atomist/sdm-pack-jenkins
 
+[![atomist sdm goals](https://badge.atomist.com/T29E48P34/atomist/sdm-pack-jenkins/2d680bec-366f-4818-a427-cc8b62280097)](https://app.atomist.com/workspace/T29E48P34)
 [![npm version](https://img.shields.io/npm/v/@atomist/sdm-pack-jenkins.svg)](https://www.npmjs.com/package/@atomist/sdm-pack-jenkins)
 
 An extension Pack for an Atomist SDM to integrate with Jenkins for 
