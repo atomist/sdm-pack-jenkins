@@ -30,7 +30,7 @@ export const configuration = configure(async () => {
     // Jenkins goal that runs a job named <repo_name>-build which will be
     // created or updated with a job definition returned by the mavenPipeline
     // function
-    const build = jenkins("build", {
+    const build = jenkinsRun("build", {
         ...options,
         job: async gi => `${gi.goalEvent.repo.name}-build`,
         definition: async gi => mavenPipeline(gi),
@@ -51,7 +51,7 @@ export const configuration = configure(async () => {
             ],
         },
     };
-});
+}, { name: "jenkins" });
 
 /**
  * Load the job definition from a local XML template
