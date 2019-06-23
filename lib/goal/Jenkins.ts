@@ -81,7 +81,7 @@ export interface JenkinsRegistration extends Partial<ImplementationRegistration>
 /**
  * Start a Jenkins job
  */
-export function jenkinsRun(goalDetails: string | FulfillableGoalDetails, registration: JenkinsRegistration = {}): Jenkins {
+export function jenkins(goalDetails: string | FulfillableGoalDetails, registration: JenkinsRegistration = {}): Jenkins {
     const gd: FulfillableGoalDetails = {
         uniqueName: DefaultGoalNameGenerator.generateName("jenkins"),
     };
@@ -132,12 +132,12 @@ export function executeJenkins(registration: JenkinsRegistration): ExecuteGoal {
             throw new Error("Jenkins server configuration incomplete. Please configure your server url at 'sdm.jenkins.url'");
         }
 
-        // Construct the jenkinsRun url
+        // Construct the jenkins url
         const url = new URL(server.url);
         url.username = server.user;
         url.password = server.password;
 
-        // Get the jenkinsRun api instance
+        // Get the jenkins api instance
         const js = require("jenkins")({ baseUrl: url.href, promisify: true, crumbIssuer: true });
 
         const jobName = await getJobName(registration, gi);

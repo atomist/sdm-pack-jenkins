@@ -15,7 +15,7 @@
  */
 
 export {
-    jenkinsRun,
+    jenkins,
     JenkinsJobParameters,
     JenkinsRegistration,
     JenkinsJobDefinition,
@@ -23,4 +23,4 @@ export {
 
     JenkinsProgressReporter,
     JenkinsProgressTests,
-} from "./lib/goal/JenkinsRun";
+} from "./lib/goal/Jenkins";
