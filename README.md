@@ -30,7 +30,7 @@ export const configuration = configure(async () => {
     // Jenkins goal that runs a job named <repo_name>-build which will be
     // created or updated with a job definition returned by the mavenPipeline
     // function
-    const build = jenkinsRun("build", {
+    const build = jenkins("build", {
         ...options,
         job: async gi => `${gi.goalEvent.repo.name}-build`,
         definition: async gi => mavenPipeline(gi),
@@ -62,6 +62,8 @@ async function mavenPipeline(gi: GoalInvocation): Promise<string> {
     return hb({ gi });
 }
 ```
+<!-- atomist:docs-sdm:codeSnippetInline: Snippet 'sdm' found in https://raw.githubusercontent.com/atomist/samples/master/lib/sdm/jenkinsJob.ts -->
+<div class="sample-code"><a href="https://github.com/atomist/samples/tree/master/lib/sdm/jenkinsJob.ts#L45-L93" target="_blank">Source</a></div>
 <!-- atomist:code-snippet:end -->
 
 Software delivery machines enable you to control your delivery process
