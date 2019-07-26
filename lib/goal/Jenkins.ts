@@ -171,62 +171,71 @@ export function executeJenkins(registration: JenkinsRegistration): ExecuteGoal {
 
             const item = await triggerJob(jobName, parameters, js);
 
-            progressLog.write("/--");
-            progressLog.write("Jenkins job '%s' started with queue id '%s'", jobName, item.executable.number);
-            progressLog.write("\\--");
+            if (!!item) {
 
-            // Set build event to the backend
-            await updateBuildStatus("started", goalEvent, item.executable.url, item.executable.number, context.workspaceId);
+                progressLog.write("/--");
+                progressLog.write("Jenkins job '%s' started with build id '%s'", jobName, item.id || "<unkown>");
+                progressLog.write("\\--");
 
-            // Set up log streaming
-            const log = js.build.logStream(jobName, item.executable.number);
-            const deferred = new Deferred<void>();
+                // Set build event to the backend
+                await updateBuildStatus("started", goalEvent, item.url, item.id, context.workspaceId);
 
-            log.on("data", (text: string) => {
-                progressLog.write(text);
-            });
-            log.on("error", (err: any) => {
-                progressLog.write(serializeResult(err));
-            });
-            log.on("end", () => {
-                deferred.resolve();
-            });
+                // Set up log streaming
+                const log = js.build.logStream(jobName, item.id);
+                const deferred = new Deferred<void>();
 
-            // Now wait for the job to finish
-            await deferred.promise;
+                log.on("data", (text: string) => {
+                    progressLog.write(text);
+                });
+                log.on("error", (err: any) => {
+                    progressLog.write(serializeResult(err));
+                });
+                log.on("end", () => {
+                    deferred.resolve();
+                });
 
-            const result = await js.build.get(jobName, item.executable.number);
-            let status;
-            let state: SdmGoalState;
-            switch (result.result) {
-                case "SUCCESS":
-                    status = "passed";
-                    state = SdmGoalState.success;
-                    break;
-                case "ABORTED":
-                    status = "canceled";
-                    state = SdmGoalState.stopped;
-                    break;
-                case "FAILURE":
-                    status = "failed";
-                    state = SdmGoalState.failure;
-                    break;
+                // Now wait for the job to finish
+                await deferred.promise;
+
+                const result = await js.build.get(jobName, item.id);
+                let status;
+                let state;
+                switch (result.result) {
+                    case "SUCCESS":
+                        status = "passed";
+                        state = SdmGoalState.success;
+                        break;
+                    case "ABORTED":
+                        status = "canceled";
+                        state = SdmGoalState.stopped;
+                        break;
+                    case "FAILURE":
+                        status = "failed";
+                        state = SdmGoalState.failure;
+                        break;
+                }
+
+                progressLog.write("/--");
+                progressLog.write("Jenkins job '%s' completed with %s", jobName, state);
+                progressLog.write("\\--");
+
+                // Set build event to the backend
+                await updateBuildStatus(status as any, goalEvent, item.url, item.id, context.workspaceId);
+
+                return {
+                    state,
+                    description: `Jenkins ${codeLine(jobName)} ${status}`,
+                    externalUrls: [
+                        { label: "Log", url: result.url },
+                    ],
+                };
             }
 
-            progressLog.write("/--");
-            progressLog.write("Jenkins job '%s' completed with %s", jobName, state);
-            progressLog.write("\\--");
-
-            // Set build event to the backend
-            await updateBuildStatus(status as any, goalEvent, item.executable.url, item.executable.number, context.workspaceId);
-
             return {
-                state,
-                description: `Jenkins ${codeLine(jobName)} ${status}`,
-                externalUrls: [
-                    { label: "Log", url: result.url },
-                ],
+                state: SdmGoalState.success,
+                description: `Jenkins ${codeLine(jobName)} triggered`,
             };
+
         } else {
             progressLog.write("/--");
             progressLog.write("Not starting Jenkins job '%s'", jobName);
@@ -300,9 +309,13 @@ async function getParameters(registration: JenkinsRegistration,
 
 async function triggerJob(jobName: string,
                           parameters: Record<string, string>,
-                          js: any): Promise<any> {
+                          js: any): Promise<undefined | { id: string, url: string }> {
     // Trigger the job to start
     const build = await js.job.build({ name: jobName, parameters });
+
+    if (isNaN(build)) {
+        return undefined;
+    }
 
     // Wait for the job to be running
     let item;
@@ -310,7 +323,7 @@ async function triggerJob(jobName: string,
         item = await js.queue.item(build);
         await sleep(500);
     } while (!item || !item.executable || !item.executable.number);
-    return item;
+    return { id: item.executable.number, url: item.executable.url };
 }
 
 function updateBuildStatus(status: "started" | "failed" | "error" | "passed" | "canceled",
