@@ -16,11 +16,11 @@
 
 export {
     jenkins,
+    Jenkins,
     JenkinsJobParameters,
     JenkinsRegistration,
     JenkinsJobDefinition,
     JenkinsJobName,
-
     JenkinsProgressReporter,
     JenkinsProgressTests,
 } from "./lib/goal/Jenkins";
