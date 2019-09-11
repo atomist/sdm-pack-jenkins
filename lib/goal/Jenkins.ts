@@ -114,7 +114,7 @@ export function jenkins(goalDetails: string | FulfillableGoalDetails, registrati
     });
 }
 
-class Jenkins extends FulfillableGoalWithRegistrations<JenkinsRegistration> {
+export class Jenkins extends FulfillableGoalWithRegistrations<JenkinsRegistration> {
 
     constructor(private readonly goalDefinition: GoalDefinition,
                 ...dependsOn: Goal[]) {
