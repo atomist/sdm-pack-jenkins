@@ -289,7 +289,7 @@ async function createOrUpdateJob(jobName: string,
         progressLog.write("\\--");
     } else {
         progressLog.write("/--");
-        progressLog.write("Not updating definition of Jenkins job '%s'", jobName);
+        progressLog.write("Not updating definition of Jenkins job '%s' as no definition was provided.", jobName);
         progressLog.write("\\--");
     }
 }
