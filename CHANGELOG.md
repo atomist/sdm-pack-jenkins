@@ -14,3 +14,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 -   Export `Jenkins` class. [#10](https://github.com/atomist/sdm-pack-jenkins/issues/10)
+-   Add explanation for why jobs aren't created. [#11](https://github.com/atomist/sdm-pack-jenkins/issues/11)
